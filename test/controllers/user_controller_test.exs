@@ -2,8 +2,8 @@ defmodule Chimera.UserControllerTest do
   use Chimera.ConnCase
 
   alias Chimera.User
-  @valid_attrs %{email: "some content", password_digest: "some content", username: "some content"}
-  @invalid_attrs %{}
+  @valid_create_attrs %{email: "test@test.com", password: "test1234", password_confirmation: "test1234", username: "testuser"}
+  @valid_attrs %{email: "test@test.com", username: "testuser"}
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, user_path(conn, :index)
@@ -16,7 +16,7 @@ defmodule Chimera.UserControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, user_path(conn, :create), user: @valid_attrs
+    conn = post conn, user_path(conn, :create), user: @valid_create_attrs
     assert redirected_to(conn) == user_path(conn, :index)
     assert Repo.get_by(User, @valid_attrs)
   end
@@ -46,7 +46,7 @@ defmodule Chimera.UserControllerTest do
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
     user = Repo.insert! %User{}
-    conn = put conn, user_path(conn, :update, user), user: @valid_attrs
+    conn = put conn, user_path(conn, :update, user), user: @valid_create_attrs
     assert redirected_to(conn) == user_path(conn, :show, user)
     assert Repo.get_by(User, @valid_attrs)
   end
@@ -63,4 +63,5 @@ defmodule Chimera.UserControllerTest do
     assert redirected_to(conn) == user_path(conn, :index)
     refute Repo.get(User, user.id)
   end
+
 end
